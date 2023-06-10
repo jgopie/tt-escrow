@@ -1,12 +1,15 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const path = require('path');
-const { logger } = require('./middleware/logger');
+const { logger, logEvents } = require('./middleware/logger');
 const errorHandler = require('./middleware/errorHandler');
 const cookieParser = require('cookie-parser');
 const corsOptions = require('./config/corsOptions');
 const cors = require('cors');
+
 const PORT = process.env.PORT | 3500;
+console.log(`${process.env.NODE_ENV} Mode started`);
 
 app.use(logger);
 
@@ -19,6 +22,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', require('./router/root'));
+app.use('/users', require('./router/userRoutes'));
 
 app.all('*', (req, res) => {
     res.status(404);
@@ -32,5 +36,6 @@ app.all('*', (req, res) => {
 });
 
 app.use(errorHandler);
+
 
 app.listen(PORT, () => { console.log(`Server running on port ${PORT}`) });
