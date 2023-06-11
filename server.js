@@ -8,14 +8,14 @@ const cookieParser = require('cookie-parser');
 const corsOptions = require('./config/corsOptions');
 const cors = require('cors');
 
-const PORT = process.env.PORT | 3500;
+const PORT = process.env.PORT || 3500;
 console.log(`${process.env.NODE_ENV} Mode started`);
 
 app.use(logger);
 
 app.use(cors(corsOptions));
 
-app.use(cookieParser);
+// app.use(cookieParser);
 
 app.use(express.json());
 
@@ -23,6 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', require('./router/root'));
 app.use('/users', require('./router/userRoutes'));
+
 
 app.all('*', (req, res) => {
     res.status(404);

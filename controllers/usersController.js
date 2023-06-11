@@ -8,11 +8,12 @@ const prisma = require('../config/dbConn');
 
 const getAllUsers = asyncHandler(async (req, res) => {
     const allUsers = await prisma.user.findMany();
-    if (!allUsers) {
+    if (!allUsers?.length) {
         return res.status(400).json({ message: "No Users Found" });
     }
-    return res.json({ users: allUsers });
+    res.json(allUsers);
 });
+
 
 // @desc creates new User
 // @route POST /users
@@ -50,7 +51,7 @@ const createNewUser = asyncHandler(async (req, res) => {
 const updateUser = asyncHandler(async (req, res) => {
     const { userId, userName, userEmail, userActive } = req.body;
 
-    if (!id || !userName || !userEmail || typeof userActive !== 'boolean') {
+    if (!userId || !userName || !userEmail || typeof userActive !== 'boolean') {
         return res.status(400).json({ message: 'All Fields are required.' });
     }
 
@@ -78,7 +79,7 @@ const updateUser = asyncHandler(async (req, res) => {
 
 const deleteUser = asyncHandler(async (req, res) => {
     const { userID } = req.body;
-    if (!id) {
+    if (!userID) {
         return res.status(400).json({ message: "User ID Required." });
     }
     // TODO: Check for active transactions before deleting user.

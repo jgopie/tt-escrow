@@ -6,6 +6,6 @@ router.route('/')
     .get(getAllUsers)
     .post(createNewUser)
     .patch(updateUser)
-    .delete(deleteUser);
+    .delete(deleteUser)
 
 module.exports = router;
